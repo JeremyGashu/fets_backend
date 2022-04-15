@@ -1,11 +1,14 @@
 const express = require('express')
 const cors = require('cors')
 const { database } = require('./database')
-const example = require('./models').Example
+
+const config = require('./models').config
+
 require('dotenv').config()
 const app = express()
 
 
+config.create({name : "example name", value : 'value'})
 
 
 database.authenticate().then(() => {
@@ -16,12 +19,6 @@ database.authenticate().then(() => {
 })
 
 
-
-example.findAll().then(val => {
-    console.log(val)
-}).catch(err => {
-    console.log(err)
-})
 
 
 app.use(cors())
@@ -36,3 +33,4 @@ const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 })
+

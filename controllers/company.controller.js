@@ -1,6 +1,6 @@
 const Company = require('../models').company
 const { validationResult } = require('express-validator')
-
+const models = require('../models')
 exports.getAllCompanies = async (req, res) => {
     Company.findAll().then(val => {
         res.status(200).json({
@@ -15,6 +15,7 @@ exports.getAllCompanies = async (req, res) => {
             success: false,
             errors: [
                 'Internal Server Error!',
+                err
             ],
             statusCode: 500
 

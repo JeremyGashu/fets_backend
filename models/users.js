@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      users.belongsTo(models.company)
-      users.hasMany(orders.notification)
+      users.belongsTo(models.company, {foreignKey : 'company_id'})
+      users.hasMany(models.notification)
     }
   }
   users.init({

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       users.belongsTo(models.company)
-      users.hasMany(orders.notification)
+      users.hasMany(models.notification)
     }
   }
   users.init({

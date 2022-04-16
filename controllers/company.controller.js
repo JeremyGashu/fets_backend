@@ -2,6 +2,8 @@ const Company = require('../models').company
 const { validationResult } = require('express-validator')
 const User = require('../models').users
 
+require('dotenv').config()
+
 exports.getAllCompanies = async (req, res) => {
     Company.findAll({
         include: [{
@@ -41,7 +43,9 @@ exports.getCompanyById = async (req, res) => {
                 errors: [
                     'Company cannot be found with this ID!',
                 ],
-                statusCode: 422
+                statusCode: 422,
+                success : false,
+
 
             })
         }
@@ -114,7 +118,9 @@ exports.deleteCompany = async (req, res) => {
         res.status(200).json({
             error: false,
             success: true,
-            statusCode: 200
+            statusCode: 200,
+            success : true,
+
         })
     }).catch(err => {
         res.status(500).json({
@@ -146,8 +152,8 @@ exports.updateCompany = async (req, res) => {
             errors: [
                 'Company cannot be found with this ID!',
             ],
-            statusCode: 422
-
+            statusCode: 422,
+            success : false
         })
     }
 

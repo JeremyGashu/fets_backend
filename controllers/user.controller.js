@@ -100,7 +100,25 @@ exports.createUser = async (req, res) => {
         return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
     }
 
-    const { name, email, phone, role, status, password, confirm, company_id } = req.body
+    const { name, email, phone, role, status, password, confirm, company_id, username } = req.body
+
+    let userExists = await User.findOne({
+        where: {
+            username: username
+        }
+    })
+
+    if (userExists) {
+        return res.status(422).json({
+            error: true,
+            success: false,
+            errors: [
+                'Username already taken',
+            ],
+            statusCode: 422
+
+        })
+    }
 
     let selectedCompany = await Company.findByPk(company_id)
     if (!selectedCompany) {
@@ -114,7 +132,7 @@ exports.createUser = async (req, res) => {
 
         })
     }
-    User.create({ name, email, phone, role, status, password, confirm, company_id }).then(val => {
+    User.create({ name, email, phone, role, status, password, confirm, company_id, username }).then(val => {
         res.status(200).json({
             error: false,
             success: true,
@@ -156,7 +174,7 @@ exports.updateUser = async (req, res) => {
         })
     }
 
-    const { name, email, phone, role, status, password, company_id } = req.body
+    const { name, email, phone, role, status, password, company_id, username } = req.body
 
 
     selectedUser.update({
@@ -166,7 +184,8 @@ exports.updateUser = async (req, res) => {
         status: status || selectedUser.status,
         phone: phone || selectedUser.phone,
         password: password || selectedUser.password,
-        company_id: company_id || selectedUser.company_id
+        company_id: company_id || selectedUser.company_id,
+        username: username || selectedUser.username
     }).then(val => {
         res.status(200).json({
             error: false,

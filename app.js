@@ -4,6 +4,7 @@ const { database } = require('./database')
 
 const companyRoute = require('./routes/company.route')
 const userRoute = require('./routes/users.route')
+const authRoute = require('./routes/auth.route')
 
 require('dotenv').config()
 const app = express()
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/company', companyRoute)
 app.use('/user', userRoute)
+app.use('/auth', authRoute)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {

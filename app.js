@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const { database } = require('./database')
+
 const companyRoute = require('./routes/company.route')
+const userRoute = require('./routes/users.route')
 
 require('dotenv').config()
 const app = express()
@@ -20,6 +22,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/company', companyRoute)
+app.use('/user', userRoute)
+
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {

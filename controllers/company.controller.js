@@ -1,8 +1,13 @@
 const Company = require('../models').company
 const { validationResult } = require('express-validator')
+const User = require('../models').users
 
 exports.getAllCompanies = async (req, res) => {
-    Company.findAll().then(val => {
+    Company.findAll({
+        include: [{
+            model: User
+        }]
+    }).then(val => {
         res.status(200).json({
             error: false,
             success: true,
@@ -25,7 +30,11 @@ exports.getAllCompanies = async (req, res) => {
 
 exports.getCompanyById = async (req, res) => {
     const { id } = req.params
-    Company.findByPk(id).then(val => {
+    Company.findByPk(id, {
+        include: [{
+            model: User
+        }]
+    }).then(val => {
         if (!val) {
             return res.status(422).json({
                 error: true,

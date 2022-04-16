@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // users.belongsTo(models.company, { foreignKey: 'company_id' })
+      users.belongsTo(models.company, { foreignKey: 'company_id', onDelete: 'CASCADE' })
+      users.hasMany(models.notification, { foreignKey: 'user_id' })
       // users.hasMany(models.notification)
     }
   }
@@ -40,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    },
+    company_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'users',

@@ -1,5 +1,7 @@
 const { check } = require("express-validator");
 
+exports.usernameMustAtLeast8Chars = check('username').isLength({min : 8}).withMessage('Username cannot be less then 8 chars')
+
 exports.userEmailCannotBeEmpty = check('email').notEmpty().withMessage('Email cannot be empty')
 
 exports.isValidUserEmailAddress = check('email').isEmail().withMessage('Please enter valid email address!')

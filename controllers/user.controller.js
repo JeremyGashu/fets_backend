@@ -100,7 +100,7 @@ exports.createUser = async (req, res) => {
         return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
     }
 
-    const { name, email, phone, role, status, password, confirm, company_id, username } = req.body
+    const { name, email, phone, role, status, password, confirm, company_id, username, address  } = req.body
 
     let userExists = await User.findOne({
         where: {
@@ -132,7 +132,7 @@ exports.createUser = async (req, res) => {
 
         })
     }
-    User.create({ name, email, phone, role, status, password, confirm, company_id, username }).then(val => {
+    User.create({ name, email, phone, role, status, password, confirm, company_id, username, address}).then(val => {
         res.status(200).json({
             error: false,
             success: true,
@@ -174,7 +174,7 @@ exports.updateUser = async (req, res) => {
         })
     }
 
-    const { name, email, phone, role, status, password, company_id, username } = req.body
+    const { name, email, phone, role, status, password, company_id, username, address } = req.body
 
 
     selectedUser.update({
@@ -185,7 +185,8 @@ exports.updateUser = async (req, res) => {
         phone: phone || selectedUser.phone,
         password: password || selectedUser.password,
         company_id: company_id || selectedUser.company_id,
-        username: username || selectedUser.username
+        username: username || selectedUser.username,
+        address : address || selectedUser.address
     }).then(val => {
         res.status(200).json({
             error: false,

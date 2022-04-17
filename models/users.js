@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
 
     name: {
       type: DataTypes.STRING,
-      allowNull: null
     },
     email: {
       type: DataTypes.STRING,
@@ -28,11 +27,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    address : {
+      type : DataTypes.STRING,
     },
     role: {
       type: DataTypes.STRING,
@@ -41,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue : false,
     },
     password: {
       type: DataTypes.STRING,

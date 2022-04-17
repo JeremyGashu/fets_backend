@@ -8,6 +8,6 @@ router.get('/', loggedInAsTechnicalAdmin, getAllUsers)
 router.get('/:id', loggedInAsTechnicalAdmin, getUserById)
 router.post('/', userEmailCannotBeEmpty, isValudUserEmailAddress, usernameMustAtLeast8Chars, userRoleCannotBeEmpyt, isValidUserRole, userPasswordCannotBeEmpty, validPasswordLength, createUser)
 router.delete('/:id', loggedInAsTechnicalAdmin, deleteUser)
-router.patch('/:id', loggedInAsTechnicalAdmin, updateUser)
+router.patch('/:id', updateUser)
 
 module.exports = router

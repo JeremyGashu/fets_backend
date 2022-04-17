@@ -2,6 +2,8 @@ const User = require('../models').users
 const Company = require('../models').company
 const { validationResult } = require('express-validator')
 
+const bcrypt = require('bcryptjs')
+
 exports.getAllUsers = async (req, res) => {
     User.findAll().then(val => {
         res.status(200).json({
@@ -100,7 +102,7 @@ exports.createUser = async (req, res) => {
         return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
     }
 
-    const { name, email, phone, role, status, password, confirm, company_id, username, address  } = req.body
+    const { name, email, phone, role, status, password, confirm, company_id, username, address } = req.body
 
     let userExists = await User.findOne({
         where: {
@@ -132,25 +134,41 @@ exports.createUser = async (req, res) => {
 
         })
     }
-    User.create({ name, email, phone, role, status, password, confirm, company_id, username, address}).then(val => {
-        res.status(200).json({
-            error: false,
-            success: true,
-            body: val,
-            statusCode: 200
-        })
-    }).catch(err => {
-        console.log(err)
-        res.status(500).json({
-            error: true,
-            success: false,
-            errors: [
-                'Internal Server Error!',
-            ],
-            statusCode: 500
 
+    bcrypt.hash(password, 8, (err, hash) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
+        }
+        User.create({ name, email, phone, role, status, password: hash, confirm, company_id, username, address }).then(val => {
+            res.status(200).json({
+                error: false,
+                success: true,
+                body: val,
+                statusCode: 200
+            })
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
         })
     })
+
 }
 
 exports.updateUser = async (req, res) => {
@@ -177,32 +195,86 @@ exports.updateUser = async (req, res) => {
     const { name, email, phone, role, status, password, company_id, username, address } = req.body
 
 
-    selectedUser.update({
-        name: name || selectedUser.name,
-        email: email || selectedUser.email,
-        role: role || selectedUser.role,
-        status: status || selectedUser.status,
-        phone: phone || selectedUser.phone,
-        password: password || selectedUser.password,
-        company_id: company_id || selectedUser.company_id,
-        username: username || selectedUser.username,
-        address : address || selectedUser.address
-    }).then(val => {
-        res.status(200).json({
-            error: false,
-            success: true,
-            body: val,
-            statusCode: 200
-        })
-    }).catch(err => {
-        res.status(500).json({
-            error: true,
-            success: false,
-            errors: [
-                'Internal Server Error!',
-            ],
-            statusCode: 500
+
+    if (password) {
+        bcrypt.hash(password, 8, (err, hash) => {
+
+            if (err) {
+                return res.status(500).json({
+                    error: true,
+                    success: false,
+                    errors: [
+                        'Internal Server Error!',
+                    ],
+                    statusCode: 500
+
+                })
+            }
+
+            selectedUser.update({
+                name: name || selectedUser.name,
+                email: email || selectedUser.email,
+                role: role || selectedUser.role,
+                status: status || selectedUser.status,
+                phone: phone || selectedUser.phone,
+                password: hash,
+                company_id: company_id || selectedUser.company_id,
+                username: username || selectedUser.username,
+                address: address || selectedUser.address
+            }).then(val => {
+                res.status(200).json({
+                    error: false,
+                    success: true,
+                    body: val,
+                    statusCode: 200
+                })
+            }).catch(err => {
+                res.status(500).json({
+                    error: true,
+                    success: false,
+                    errors: [
+                        'Internal Server Error!',
+                    ],
+                    statusCode: 500
+
+                })
+            })
 
         })
-    })
+
+    }
+
+    else {
+        selectedUser.update({
+            name: name || selectedUser.name,
+            email: email || selectedUser.email,
+            role: role || selectedUser.role,
+            status: status || selectedUser.status,
+            phone: phone || selectedUser.phone,
+            password: selectedUser.password,
+            company_id: company_id || selectedUser.company_id,
+            username: username || selectedUser.username,
+            address: address || selectedUser.address
+        }).then(val => {
+            res.status(200).json({
+                error: false,
+                success: true,
+                body: val,
+                statusCode: 200
+            })
+        }).catch(err => {
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
+        })
+    }
+
+
+
 }

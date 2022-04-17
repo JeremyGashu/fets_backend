@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.get('/', loggedInAsTechnicalAdmin, getAllUsers)
 router.get('/:id', loggedInAsTechnicalAdmin, getUserById)
-router.post('/', userEmailCannotBeEmpty, isValudUserEmailAddress, usernameMustAtLeast8Chars, userRoleCannotBeEmpyt, isValidUserRole, userPasswordCannotBeEmpty, validPasswordLength, createUser)
+router.post('/', loggedInAsTechnicalAdmin,userEmailCannotBeEmpty, isValudUserEmailAddress, usernameMustAtLeast8Chars, userRoleCannotBeEmpyt, isValidUserRole, userPasswordCannotBeEmpty, validPasswordLength, createUser)
 router.delete('/:id', loggedInAsTechnicalAdmin, deleteUser)
-router.patch('/:id', updateUser)
+router.patch('/:id',loggedInAsTechnicalAdmin, updateUser)
 
 module.exports = router

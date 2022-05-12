@@ -13,7 +13,7 @@ exports.getAllCompanies = async (req, res) => {
             statusCode: 200
         })
     }).catch(err => {
-        res.status.json({
+        res.json({
             error: true,
             success: false,
             errors: [
@@ -73,7 +73,7 @@ exports.createCompanies = async (req, res) => {
 
     const { name, email, phone, address, description } = req.body
     Company.create({ name, email, phone, address, description }).then(val => {
-        res.status(200).json({
+        return res.status(200).json({
             error: false,
             success: true,
             body: val,

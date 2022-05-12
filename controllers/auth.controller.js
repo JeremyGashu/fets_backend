@@ -11,14 +11,18 @@ exports.loginUser = async (req, res) => {
         }
     })
 
+
+
+
     if (!user) {
-        return res.status(403).json({
+        console.log('Here 2')
+        return res.json({
             error: true,
             success: false,
             errors: [
                 'Incorrect username or password!'
             ],
-            statusCode: 403
+            statusCode: 401
         })
     }
     bcrypt.compare(password, user.password, (err, response) => {
@@ -48,20 +52,22 @@ exports.loginUser = async (req, res) => {
                 success: true,
                 body: {
                     token: token,
-                    userId: user.id
+                    userId: user.id,
+                    type : user.role
                 },
                 statusCode: 200
             })
 
         }
         else {
-            res.status(403).json({
+            console.log('Here 1')
+            res.json({
                 error: true,
                 success: false,
                 errors: [
                     'Incorrect username or password!'
                 ],
-                statusCode: 403
+                statusCode: 401
             })
         }
     })

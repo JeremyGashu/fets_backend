@@ -5,11 +5,7 @@ const User = require('../models').users
 require('dotenv').config()
 
 exports.getAllCompanies = async (req, res) => {
-    Company.findAll({
-        include: [{
-            model: User
-        }]
-    }).then(val => {
+    Company.findAll().then(val => {
         res.status(200).json({
             error: false,
             success: true,
@@ -17,7 +13,7 @@ exports.getAllCompanies = async (req, res) => {
             statusCode: 200
         })
     }).catch(err => {
-        res.status(500).json({
+        res.status.json({
             error: true,
             success: false,
             errors: [
@@ -44,7 +40,7 @@ exports.getCompanyById = async (req, res) => {
                     'Company cannot be found with this ID!',
                 ],
                 statusCode: 422,
-                success : false,
+                success: false,
 
 
             })
@@ -119,7 +115,7 @@ exports.deleteCompany = async (req, res) => {
             error: false,
             success: true,
             statusCode: 200,
-            success : true,
+            success: true,
 
         })
     }).catch(err => {
@@ -153,7 +149,7 @@ exports.updateCompany = async (req, res) => {
                 'Company cannot be found with this ID!',
             ],
             statusCode: 422,
-            success : false
+            success: false
         })
     }
 

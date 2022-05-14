@@ -41,7 +41,7 @@ exports.getFeedById = async (req, res) => {
         res.status(200).json({
             error: false,
             success: true,
-            company: val,
+            feed: val,
             statusCode: 200
         })
     }).catch(err => {
@@ -64,12 +64,12 @@ exports.createFeed = async (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
+        return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
     }
 
     console.log(req.body)
     if (!req.file) {
-        return res.json({
+        return res.status(422).json({
             error: true,
             success: false,
             errors: [

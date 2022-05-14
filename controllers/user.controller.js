@@ -5,7 +5,11 @@ const { validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 
 exports.getAllUsers = async (req, res) => {
-    User.findAll().then(val => {
+    User.findAll({
+        include: [{
+            model: Company
+        }]
+    }).then(val => {
         res.status(200).json({
             error: false,
             success: true,

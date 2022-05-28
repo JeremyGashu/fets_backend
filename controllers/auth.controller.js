@@ -11,9 +11,6 @@ exports.loginUser = async (req, res) => {
         }
     })
 
-
-
-
     if (!user) {
         console.log('Here 2')
         return res.json({
@@ -53,7 +50,8 @@ exports.loginUser = async (req, res) => {
                 body: {
                     token: token,
                     userId: user.id,
-                    type : user.role
+                    type : user.role,
+                    username
                 },
                 statusCode: 200
             })

@@ -22,4 +22,4 @@ exports.userPasswordCannotBeEmpty = check('password').notEmpty().withMessage('Pa
 
 exports.validPasswordLength = check('password').isLength({min : 8}).withMessage('Password cannot be less then 8 chars')
 
-exports.isValidUserRole = check('role').isIn(['PROJECT_MANAGER', 'TECHNICAL_ADMIN', 'ADMIN', 'BUGDET_PROCUREMENT_MANAGER', 'FINANCIAL_OFFICER']).withMessage('User role must be of type PROJECT_MANAGER, TECHNICAL_ADMIN, ADMIN, BUGDET_PROCUREMENT_MANAGER, FINANCIAL_OFFICER')
+exports.isValidUserRole = check('role').isIn(['PROJECT_MANAGER', 'TECHNICAL_ADMIN', 'ADMIN', 'BUDGET_PROCUREMENT_MANAGER', 'FINANCIAL_OFFICER', 'EXTERNAL_AUDITOR']).withMessage('User role must be of type PROJECT_MANAGER, TECHNICAL_ADMIN, ADMIN, BUGDET_PROCUREMENT_MANAGER, FINANCIAL_OFFICER')

@@ -30,6 +30,80 @@ exports.getAllUsers = async (req, res) => {
     })
 }
 
+exports.donorSignUp = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
+    }
+
+    const { name, email, phone, password, confirm, username, address } = req.body
+
+    let userExists = await User.findOne({
+        where: {
+            username: username
+        }
+    })
+
+    if (userExists) {
+        return res.status(422).json({
+            error: true,
+            success: false,
+            errors: [
+                'Username already taken',
+            ],
+            statusCode: 422
+
+        })
+    }
+
+    // let selectedCompany = await Company.findByPk(null)
+    // if (!selectedCompany) {
+    //     return res.status(422).json({
+    //         error: true,
+    //         success: false,
+    //         errors: [
+    //             'Company cannot be found with this ID!',
+    //         ],
+    //         statusCode: 422
+
+    //     })
+    // }
+
+    bcrypt.hash(password, 8, (err, hash) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
+        }
+        User.create({ name, email, phone, role: 'DONOR', status: true, password: hash, confirm, username, address }).then(val => {
+            res.status(200).json({
+                error: false,
+                success: true,
+                body: val,
+                statusCode: 200
+            })
+        }).catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
+        })
+    })
+}
+
 exports.getUserById = async (req, res) => {
 
     const { id } = req.params

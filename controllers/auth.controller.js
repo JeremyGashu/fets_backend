@@ -12,7 +12,6 @@ exports.loginUser = async (req, res) => {
     })
 
     if (!user) {
-        console.log('Here 2')
         return res.json({
             error: true,
             success: false,
@@ -22,6 +21,18 @@ exports.loginUser = async (req, res) => {
             statusCode: 401
         })
     }
+
+    if (user && user.status === false) {
+        return res.json({
+            error: true,
+            success: false,
+            errors: [
+                'Suspended User!'
+            ],
+            statusCode: 401
+        })
+    }
+
     bcrypt.compare(password, user.password, (err, response) => {
         if (err) {
             return res.status(500).json({
@@ -50,7 +61,7 @@ exports.loginUser = async (req, res) => {
                 body: {
                     token: token,
                     userId: user.id,
-                    type : user.role,
+                    type: user.role,
                     username
                 },
                 statusCode: 200

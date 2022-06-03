@@ -121,7 +121,7 @@ exports.getUserById = async (req, res) => {
         res.status(200).json({
             error: false,
             success: true,
-            company: val,
+            user: val,
             statusCode: 200
         })
     }).catch(err => {
@@ -135,8 +135,46 @@ exports.getUserById = async (req, res) => {
 
         })
     })
-
 }
+
+exports.getUserByUsername = async (req, res) => {
+
+    const { username } = req.params
+    User.findOne({
+        where: { username }, 
+        include: [{
+            model: Company
+        }]
+    }).then(val => {
+        if (!val) {
+            return res.status(422).json({
+                error: true,
+                errors: [
+                    'User cannot be found with this username!',
+                ],
+                statusCode: 422
+
+            })
+        }
+        res.status(200).json({
+            error: false,
+            success: true,
+            user: val,
+            statusCode: 200
+        })
+    }).catch(err => {
+        res.status(500).json({
+            error: true,
+            success: false,
+            errors: [
+                'Internal Server Error!',
+            ],
+            statusCode: 500
+
+        })
+    })
+}
+
 
 exports.deleteUser = async (req, res) => {
     const { id } = req.params
@@ -328,6 +366,115 @@ exports.updateUser = async (req, res) => {
             email: email || selectedUser.email,
             role: role || selectedUser.role,
             status: status || selectedUser.status,
+            phone: phone || selectedUser.phone,
+            password: selectedUser.password,
+            company_id: company_id || selectedUser.company_id,
+            username: username || selectedUser.username,
+            address: address || selectedUser.address
+        }).then(val => {
+            res.status(200).json({
+                error: false,
+                success: true,
+                body: val,
+                statusCode: 200
+            })
+        }).catch(err => {
+            res.status(500).json({
+                error: true,
+                success: false,
+                errors: [
+                    'Internal Server Error!',
+                ],
+                statusCode: 500
+
+            })
+        })
+    }
+
+
+
+}
+
+
+exports.changeUserActivity = async (req, res) => {
+    const { id } = req.params
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ error: true, errors: errors.array().map(err => err.msg), statusCode: 422, });
+    }
+
+    let selectedUser = await User.findByPk(id)
+
+    if (!selectedUser) {
+        return res.status(422).json({
+            error: true,
+            errors: [
+                'User cannot be found with this ID!',
+            ],
+            statusCode: 422
+
+        })
+    }
+
+    const { name, email, phone, role, status, password, company_id, username, address } = req.body
+
+
+
+    if (password) {
+        bcrypt.hash(password, 8, (err, hash) => {
+
+            if (err) {
+                return res.status(500).json({
+                    error: true,
+                    success: false,
+                    errors: [
+                        'Internal Server Error!',
+                    ],
+                    statusCode: 500
+
+                })
+            }
+
+            selectedUser.update({
+                name: name || selectedUser.name,
+                email: email || selectedUser.email,
+                role: role || selectedUser.role,
+                status: status != null ? status : selectedUser.status,
+                phone: phone || selectedUser.phone,
+                password: hash,
+                company_id: company_id || selectedUser.company_id,
+                username: username || selectedUser.username,
+                address: address || selectedUser.address
+            }).then(val => {
+                res.status(200).json({
+                    error: false,
+                    success: true,
+                    body: val,
+                    statusCode: 200
+                })
+            }).catch(err => {
+                res.status(500).json({
+                    error: true,
+                    success: false,
+                    errors: [
+                        'Internal Server Error!',
+                    ],
+                    statusCode: 500
+
+                })
+            })
+
+        })
+
+    }
+
+    else {
+        selectedUser.update({
+            name: name || selectedUser.name,
+            email: email || selectedUser.email,
+            role: role || selectedUser.role,
+            status: status != null ? status : selectedUser.status,
             phone: phone || selectedUser.phone,
             password: selectedUser.password,
             company_id: company_id || selectedUser.company_id,

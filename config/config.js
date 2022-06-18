@@ -18,10 +18,13 @@ module.exports = {
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "1234",
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  }
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "dialectOptions": {
+       "ssl": {
+         "require": true,
+         "rejectUnauthorized": false
+       }
+     }
+   }
 }

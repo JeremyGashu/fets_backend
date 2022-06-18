@@ -9,6 +9,7 @@ const userRoute = require('./routes/users.route')
 const authRoute = require('./routes/auth.route')
 const feedRoute = require('./routes/feeds.route')
 const uploadRoute = require('./routes/upload')
+const paymentRoute = require('./routes/payment.route')
 
 require('dotenv').config()
 const app = express()
@@ -34,6 +35,7 @@ app.use('/user', userRoute)
 app.use('/auth', authRoute)
 app.use('/feed', feedRoute)
 app.use('/upload', uploadRoute)
+app.use('/payment', paymentRoute)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {

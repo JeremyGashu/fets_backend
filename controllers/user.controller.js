@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator')
 
 const bcrypt = require('bcryptjs')
 
+//Get all users that aew registered on the system
 exports.getAllUsers = async (req, res) => {
     User.findAll({
         include: [{
@@ -30,6 +31,7 @@ exports.getAllUsers = async (req, res) => {
     })
 }
 
+//Donor => will be able to sign up to the ssytem and will be able to dontate nonet
 exports.donorSignUp = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -104,6 +106,7 @@ exports.donorSignUp = async (req, res) => {
     })
 }
 
+//Get A speciic user by its id
 exports.getUserById = async (req, res) => {
 
     const { id } = req.params
@@ -326,6 +329,7 @@ exports.updateUser = async (req, res) => {
 
                 })
             }
+            //TODO whren there us a password to br approve on user add and editing user setup
 
             selectedUser.update({
                 name: name || selectedUser.name,

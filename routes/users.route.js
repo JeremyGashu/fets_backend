@@ -11,6 +11,7 @@ router.post('/signup', userPhoneCannotBeEmpty, validUserPhoneNumber, usernameCan
 router.post('/', userEmailCannotBeEmpty, isValudUserEmailAddress, usernameMustAtLeast8Chars, userRoleCannotBeEmpyt, isValidUserRole, userPasswordCannotBeEmpty, validPasswordLength, createUser)
 router.delete('/:id', loggedInAsTechnicalAdmin, deleteUser)
 router.patch('/:id', loggedInAsTechnicalAdmin, updateUser)
+router.patch('/profile/:id', updateUser)
 router.patch('/change-status/:id', loggedInAsTechnicalAdmin, changeUserActivity)
 
-module.exports = router
+module.exports = routers

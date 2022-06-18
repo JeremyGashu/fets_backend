@@ -11,7 +11,7 @@ const db = {};
 let sequelize;
 console.log('Ermias Gashu', require(__dirname + '/../config/config')[env])
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  sequelize = new Sequelize('d97uhs3e6qqg9s', 'xpxuxpjbhsppax', 'bdba4235b3d206e301b2ea2c264464695e8ceb0e1968430f47fa27bab27270c9', config);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }

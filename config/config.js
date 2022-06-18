@@ -7,6 +7,7 @@ module.exports = {
     "username": DATABSE_USERNAME,
     "password": DATABASE_PASSWORD,
     "database": DATABASE,
+    "dialect": "postgres",
     "host": DATABSAE_HOST,
     "dialect": DATABASE_DIALECT
   },

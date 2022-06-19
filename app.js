@@ -14,13 +14,13 @@ const paymentRoute = require('./routes/payment.route')
 require('dotenv').config()
 const app = express()
 
-// database.authenticate().then(() => {
-// console.log('Connected to database')
+database.authenticate().then(() => {
+console.log('Connected to database')
 
-// }).catch(err => {
-// console.log('Error', err)
-//     process.exit(1)
-// })
+}).catch(err => {
+console.log('Error', err)
+    process.exit(1)
+})
 
 
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));

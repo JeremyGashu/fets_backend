@@ -1,6 +1,7 @@
 const User = require('../models').users
 const Company = require('../models').company
 const { validationResult } = require('express-validator')
+const roles = require('../config/roles')
 
 const bcrypt = require('bcryptjs')
 
@@ -144,7 +145,7 @@ exports.getUserByUsername = async (req, res) => {
 
     const { username } = req.params
     User.findOne({
-        where: { username }, 
+        where: { username },
         include: [{
             model: Company
         }]
@@ -503,7 +504,28 @@ exports.changeUserActivity = async (req, res) => {
             })
         })
     }
+}
 
 
 
+exports.getDonorsCount = async (req, res) => {
+    // roles
+    User.findAll().then(val => {
+        res.status(200).json({
+            error: false,
+            success: true,
+            count: (val && val.filter(user => Object.keys(roles).includes(user.role)).length) || 0,
+            statusCode: 200
+        })
+    }).catch(err => {
+        res.status(500).json({
+            error: true,
+            success: false,
+            errors: [
+                'Internal Server Error!',
+            ],
+            statusCode: 500
+
+        })
+    })
 }

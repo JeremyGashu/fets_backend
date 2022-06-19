@@ -14,13 +14,13 @@ const paymentRoute = require('./routes/payment.route')
 require('dotenv').config()
 const app = express()
 
-database.authenticate().then(() => {
-    console.log('Connected to database')
+// database.authenticate().then(() => {
+// console.log('Connected to database')
 
-}).catch(err => {
-    console.log('Error', err)
-    process.exit(1)
-})
+// }).catch(err => {
+// console.log('Error', err)
+//     process.exit(1)
+// })
 
 
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
@@ -36,9 +36,8 @@ app.use('/auth', authRoute)
 app.use('/feed', feedRoute)
 app.use('/upload', uploadRoute)
 app.use('/payment', paymentRoute)
-
-const port = process.env.PORT || 5000
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+app.get('/test', (req, res) => {
+    res.json({ msg: 'Success!' })
 })
 
+module.exports = app
